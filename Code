@@ -1,14 +1,21 @@
 Sub SendEmail()
-
 Dim olApp As Outlook.Application
 Set olApp = CreateObject("Outlook.Application")
-
-    Dim olMail As Outlook.MailItem
-    Set olMail = olApp.CreateItem(olMailItem)
-    
-    olMail.To = "alexandr.hadjioglo@mail.ru"
-    olMail.Subject = "test"
-    olMail.Body = "Please update documentation"
-    olMail.Send
-
+'loop for each cell in column D
+    For Each cell In Range("D2:D100")
+        If cell.Value = "send reminder" Then 'check if reminder should be sent
+            Dim olMail As Outlook.MailItem
+            Set olMail = olApp.CreateItem(olMailItem) 'create email in Outlook
+            olMail.To = cell.Cells(1, n - 1)    'take email address from D(1,n-1) which is equal to B column of corresponding row where reminder is needed in column D
+            olMail.Subject = cell.Cells(1, n)   'take CR number from D(1,n) which is equal to C column of corresponding row where reminder is needed in column D
+            olMail.Body = "Please update documentation for CR - " & cell.Cells(1, n)
+            olMail.Display
+        End If
+    Next
 End Sub
+
+'so how the loop works: variable "cell" takes value from D2, doesnt equal to "send reminder" go to next loop
+'variable "cell" takes value from D3, equals to "send reminder" so it creates email:
+'with field TO= "cell"(with coorditanes 1 and n-1)= B3. Coordinates are taken relatively to D3
+'with field Subject = "cell"(with coordinates 1 and n)= C3. Coordinates are taken relatively to D3
+'with Body = "Please update documentation for CR - " + C3
