@@ -1,8 +1,8 @@
 Sub SendEmail()
-
 Dim olApp As Outlook.Application
 Set olApp = CreateObject("Outlook.Application")
-
+    For Each cell In Range("D2:D100")
+    If cell.Value = "send reminder" Then
     Dim olMail As Outlook.MailItem
     Set olMail = olApp.CreateItem(olMailItem)
     
@@ -10,5 +10,6 @@ Set olApp = CreateObject("Outlook.Application")
     olMail.Subject = "test"
     olMail.Body = "Please update documentation"
     olMail.Send
-
+    End If
+    Next
 End Sub
